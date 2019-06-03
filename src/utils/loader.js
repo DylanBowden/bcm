@@ -3,9 +3,13 @@ const readline = require('readline');
 const Route = require('../entities/Route.class');
 
 module.exports = {
-  load: async () => {
+  /**
+    * @param routeListFile: string
+    * @returns Route
+    */
+  load: async (routeListFile) => {
     const routes = new Route();
-    const fileStream = fs.createReadStream('./resources/routes.csv');
+    const fileStream = fs.createReadStream(routeListFile);
     const rl = readline.createInterface({
       input: fileStream,
       crlfDelay: Infinity

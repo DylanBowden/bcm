@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const validator = require('./src/utils/requestValidator');
@@ -9,15 +8,14 @@ const loader = require('./src/utils/loader');
 
 const app = express();
 const port = 8080;
-app.use(bodyParser.json());
 
-app.get('/api/routes/:airlineCode/:from/:to', async (req, res) => {
-  console.log(req.params);
+let routes;
 
+app.get('/api/routes/:airlineCode/:from/:to', (req, res) => {
   try {
     validator.validateBody(req);
     const searchResults = pathFinder.find(
-      await loader.load(),
+      routes,
       req.params.airlineCode,
       req.params.from,
       req.params.to,
@@ -26,16 +24,16 @@ app.get('/api/routes/:airlineCode/:from/:to', async (req, res) => {
     const response = responseFormatter.format(searchResults);
     res.json(response);
   } catch (err) {
-    res.send(400, err.message);
+    res.status(400).send(err.message);
   }
 });
 
-const init = app.listen(port, async () => {
-  await loader.load();
+const server = app.listen(port, async () => {
+  routes = await loader.load(process.env.ROUTE_LIST);
   console.log(`listening on port ${port}!`);
 });
 
 module.exports = {
   app,
-  init
+  server
 };

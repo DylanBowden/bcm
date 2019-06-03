@@ -1,25 +1,32 @@
 module.exports = {
+  /**
+    * @param searchResults: SearchResults
+    * @returns object
+    */
   format: (searchResults) => {
     const from = searchResults.getFrom();
     const to = searchResults.getTo();
     const sellingAirline = searchResults.getSellingAirline();
-
     const formatted = [];
+
     searchResults.getRoutes().forEach(routeSteps => {
       const option = {
-        operatingAirline: [],
+        operatingAirlines: [],
         sellingAirline,
         from,
         to,
-        stopovers: []
+        stopOvers: []
       };
 
       routeSteps.forEach(step => {
         if (step.destination !== from && step.destination !== to) {
-          option.stopovers.push(step.destination);
+          option.stopOvers.push(step.destination);
         }
-        if (step.operatingCompany && step.operatingCompany !== sellingAirline) {
-          option.operatingAirline.push(step.operatingCompany);
+        if (!step.operatingAirline && !option.operatingAirlines.includes(sellingAirline)) {
+          option.operatingAirlines.push(sellingAirline);
+        }
+        if (step.operatingAirline && !option.operatingAirlines.includes(step.operatingAirline)) {
+          option.operatingAirlines.push(step.operatingAirline);
         }
       });
 
