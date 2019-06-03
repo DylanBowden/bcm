@@ -22,6 +22,11 @@ module.exports = {
       const from = parts[2];
       const to = parts[3];
       const sellingCompanies = parts[4];
+
+      if (from === to) {
+        continue; // sometimes this happens E.g. AF,LHR->LHR
+      }
+
       routes.add(operatingCompany, from, to, operatingCompany);
 
       if (sellingCompanies) {

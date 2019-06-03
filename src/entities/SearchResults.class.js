@@ -8,8 +8,13 @@ class SearchResults {
     this.to = to;
   }
 
+  /**
+  * @param path: [{ destination: string, operatingAirline: stri`ng }, ...]
+  */
   add (path) {
-    if (_.uniq(path).length === path.length) {
+    const allDestinations = path.map(a => a.destination);
+    const uniqueDestinations = _.uniq(allDestinations);
+    if (uniqueDestinations.length === allDestinations.length) {
       this.results.push(path);
     }
   }
