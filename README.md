@@ -16,6 +16,7 @@ $ npm run test
 ```
 
 ## Notes
+- to load a different route file, do so in `.env` and restart the server
 - this solution also handles [Bonus #1]
 - @todo: tests will fail if server is running. They cannot run at the same time.
 
